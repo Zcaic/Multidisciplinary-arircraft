@@ -166,3 +166,23 @@ class Asb2Cad:
             solid.add(s)
 
         return solid.clean()
+
+
+def af2geometry(af:asb.Airfoil,filename):
+    import cadquery as cq
+
+    # leindex=af.LE_index()
+    wq=cq.Workplane(
+        "XY"
+    ).spline(
+        listOfXYTuple=[
+            tuple(xy) for xy in af.upper_coordinates()
+        ]
+    ).spline(
+        listOfXYTuple=[
+            tuple(xy) for xy in af.lower_coordinates()
+        ]
+    ).close()
+    cq.exporters.export(wq,fname=filename)
+
+

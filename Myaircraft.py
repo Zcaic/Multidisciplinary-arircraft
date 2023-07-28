@@ -14,6 +14,11 @@ airfoils_list:Dict[str,asb.Airfoil]= dict(
     tipaf=asb.Airfoil(name="tipaf", coordinates=get_UIUC_coordinates("dae11")),
 )
 
+ne=airfoils_list["rootaf"].get_aero_from_neuralfoil(alpha=2,Re=1e+6)
+xf=asb.XFoil(airfoil=airfoils_list["rootaf"],Re=1e+6)
+
+print(ne)
+print(xf.alpha(2))
 # print(airfoils_list)
 
 wings_list:Dict[str,asb.Wing] = dict(
