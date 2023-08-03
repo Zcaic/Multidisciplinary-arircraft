@@ -20,4 +20,6 @@ myairfoil=asb.Airfoil(coordinates=get_kulfan_coordinates(lower_weights=lp,upper_
 # ck=rsaero['CL']/rsaero['CD']
 # print(ck)
 
-af2geometry(myairfoil,'optairfoil.step')
+# af2geometry(myairfoil,'optairfoil.step')
+myairfoil=myairfoil.repanel(60)
+myairfoil.write_dat('myaf.dat')
