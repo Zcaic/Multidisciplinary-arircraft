@@ -168,7 +168,7 @@ class Asb2Cad:
         return solid.clean()
 
 
-def af2geometry(af:asb.Airfoil,filename):
+def af2geometry(af:asb.Airfoil,filename:str,scale:float=1000):
     import cadquery as cq
 
     # leindex=af.LE_index()
@@ -176,13 +176,32 @@ def af2geometry(af:asb.Airfoil,filename):
         "XY"
     ).spline(
         listOfXYTuple=[
-            tuple(xy) for xy in af.upper_coordinates()
+            tuple(xy*scale) for xy in af.upper_coordinates()
         ]
     ).spline(
         listOfXYTuple=[
-            tuple(xy) for xy in af.lower_coordinates()
+            tuple(xy*scale) for xy in af.lower_coordinates()
         ]
     ).close()
     cq.exporters.export(wq,fname=filename)
+
+def af2VSP(af:asb.Airfoil,filename:str):
+    uc=af.upper_coordinates()
+    lc=af.lower_coordinates()
+    with open(filename,'w') as fin:
+        print(af.name,file=fin)
+        print(f'{uc.shape[0]} {lc.shape[0]}\n',file=fin)
+        np.savetxt(fin,uc[::-1],delimiter=' ')
+        fin.write('\n')
+        np.savetxt(fin,lc,delimiter=' ')
+
+def af2XYZ(af:asb.Airfoil,filename:str):
+    uc=af.upper_coordinates()
+    lc=af.lower_coordinates()
+    with open(filename,'w') as fin:
+        print(lc.shape[0],file=fin)
+        np.savetxt(fin,lc,delimiter=' ')
+        print(uc.shape[0],file=fin)
+        np.savetxt(fin,uc[::-1],delimiter=' ')  
 
 
